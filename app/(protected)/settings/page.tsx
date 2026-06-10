@@ -40,7 +40,7 @@ export default async function SettingsPage() {
               href="/settings/team"
               className="text-sm px-3 py-1.5 bg-stone-900 text-white rounded-lg hover:bg-stone-800 transition-colors"
             >
-              + เพิ่มสมาชิก
+              จัดการทีม →
             </Link>
           )}
         </div>
