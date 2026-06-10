@@ -51,7 +51,10 @@ export function TeamManager({ currentUserId }: { currentUserId: string }) {
       }).then(async (r) => {
         if (!r.ok) {
           const d = await r.json();
-          throw new Error(d.error ?? "เกิดข้อผิดพลาด");
+          const msg = typeof d.error === "string"
+            ? d.error
+            : d.error?.formErrors?.[0] ?? Object.values(d.error?.fieldErrors ?? {}).flat()[0] ?? "เกิดข้อผิดพลาด";
+          throw new Error(msg as string);
         }
         return r.json();
       }),

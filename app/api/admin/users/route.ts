@@ -37,7 +37,10 @@ export async function POST(req: Request) {
 
   const body = await req.json();
   const parsed = createUserSchema.safeParse(body);
-  if (!parsed.success) return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
+  if (!parsed.success) {
+    const issues = parsed.error.issues;
+    return NextResponse.json({ error: `${issues[0].path.join(".")}: ${issues[0].message}` }, { status: 400 });
+  }
 
   const password = parsed.data.password ?? "chujai2024";
   const passwordHash = await bcrypt.hash(password, 10);

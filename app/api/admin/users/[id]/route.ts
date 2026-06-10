@@ -17,7 +17,10 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   const { id } = await params;
   const body = await req.json();
   const parsed = updateUserSchema.safeParse(body);
-  if (!parsed.success) return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
+  if (!parsed.success) {
+    const issues = parsed.error.issues;
+    return NextResponse.json({ error: `${issues[0].path.join(".")}: ${issues[0].message}` }, { status: 400 });
+  }
 
   const user = await prisma.user.update({
     where: { id },
