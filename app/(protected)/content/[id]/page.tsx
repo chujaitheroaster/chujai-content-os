@@ -6,6 +6,7 @@ import { PLATFORM_LABELS, CONTENT_STATUS_COLORS, CONTENT_STATUS_LABELS } from "@
 import { TaskPipeline } from "@/components/tasks/TaskPipeline";
 import { AiToolsPanel } from "@/components/ai/AiToolsPanel";
 import { AnalyticsForm } from "@/components/content/AnalyticsForm";
+import { EditableContentSection } from "@/components/content/EditableContentSection";
 import Link from "next/link";
 
 export default async function ContentDetailPage({
@@ -99,42 +100,15 @@ export default async function ContentDetailPage({
               />
             </div>
 
-            {/* Content Brief */}
-            <div className="bg-white rounded-xl border border-stone-200 p-5">
-              <h2 className="font-semibold text-stone-900 mb-3">Content Brief</h2>
-              {item.brief ? (
-                <p className="text-sm text-stone-700 whitespace-pre-wrap">{item.brief}</p>
-              ) : (
-                <p className="text-sm text-stone-400">ยังไม่มี Brief</p>
-              )}
-              {item.postGoal && (
-                <div className="mt-3 pt-3 border-t border-stone-100">
-                  <p className="text-xs text-stone-500 mb-1">เป้าหมายโพสต์นี้</p>
-                  <p className="text-sm text-stone-700">{item.postGoal}</p>
-                </div>
-              )}
-            </div>
-
-            {/* Caption & Hashtags */}
-            <div className="bg-white rounded-xl border border-stone-200 p-5 space-y-4">
-              <h2 className="font-semibold text-stone-900">Caption & Hashtags</h2>
-              <div>
-                <p className="text-xs text-stone-500 mb-2">Caption Draft</p>
-                <div className="bg-stone-50 rounded-lg p-3 text-sm text-stone-700 whitespace-pre-wrap min-h-[80px]">
-                  {item.captionDraft ?? <span className="text-stone-400">ยังไม่มี Caption — ใช้ AI Tool ด้านขวา</span>}
-                </div>
-              </div>
-              {item.hashtagsDraft && (
-                <div>
-                  <p className="text-xs text-stone-500 mb-2">Hashtags</p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {item.hashtagsDraft.split(" ").filter(Boolean).map((tag) => (
-                      <span key={tag} className="text-xs px-2 py-1 bg-stone-100 text-stone-600 rounded-full">{tag}</span>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
+            {/* Editable: Brief, Caption, Hashtags, Files */}
+            <EditableContentSection
+              contentItemId={id}
+              brief={item.brief}
+              postGoal={item.postGoal}
+              captionDraft={item.captionDraft}
+              hashtagsDraft={item.hashtagsDraft}
+              files={item.files as Parameters<typeof EditableContentSection>[0]["files"]}
+            />
 
             {/* Analytics (Published only) */}
             {isPublished && (

@@ -12,7 +12,7 @@ export async function GET(req: Request) {
   const from = searchParams.get("from");
   const to = searchParams.get("to");
 
-  const where: Record<string, unknown> = { status: "PUBLISHED" };
+  const where: Record<string, unknown> = { status: { in: ["PUBLISHED", "ANALYZED"] } };
   if (platform) where.platform = platform;
   if (from || to) {
     where.targetDate = {
